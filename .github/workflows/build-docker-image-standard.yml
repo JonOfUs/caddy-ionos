@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       build_version:
-        description: 'Caddy version to build (without v prefix, e.g., 2.8.0)'
+        description: "Caddy version to build (without v prefix, e.g., 2.8.0)"
         required: false
 
 permissions:
@@ -80,7 +80,7 @@ jobs:
           }
 
           until check_availability; do
-            
+
             if [ $RETRY_COUNT -ge $MAX_RETRIES ]; then
               echo "Caddy version ${{ env.VERSION }}-builder or ${{ env.VERSION }} is not available after $MAX_RETRIES retries. Setting environment variable to trigger job again."
               echo "DEPENDENCIES_AVAILABILITY=false" >> $GITHUB_ENV
@@ -90,7 +90,7 @@ jobs:
             sleep $SLEEP_INTERVAL
             RETRY_COUNT=$((RETRY_COUNT + 1))
           done
-          
+
           if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
             echo "DEPENDENCIES_AVAILABILITY=true" >> $GITHUB_ENV
           fi
@@ -118,16 +118,16 @@ jobs:
             CADDY_VERSION=${{ env.VERSION }}
           platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/ppc64le,linux/s390x
           tags: |
-            ghcr.io/${{ env.REPO_OWNER }}/caddy-cloudflare:${{ env.VERSION }}
-            ghcr.io/${{ env.REPO_OWNER }}/caddy-cloudflare:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/caddy-cloudflare:${{ env.VERSION }}
-            ${{ secrets.DOCKERHUB_USERNAME }}/caddy-cloudflare:latest
+            ghcr.io/${{ env.REPO_OWNER }}/caddy-ionos:${{ env.VERSION }}
+            ghcr.io/${{ env.REPO_OWNER }}/caddy-ionos:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/caddy-ionos:${{ env.VERSION }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/caddy-ionos:latest
 
       - name: Clean up Docker images
         if: env.DEPENDENCIES_AVAILABILITY == 'true'
         run: |
-          docker rmi ghcr.io/${{ env.REPO_OWNER }}/caddy-cloudflare:${{ env.VERSION }} || true
-          docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/caddy-cloudflare:${{ env.VERSION }} || true
+          docker rmi ghcr.io/${{ env.REPO_OWNER }}/caddy-ionos:${{ env.VERSION }} || true
+          docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/caddy-ionos:${{ env.VERSION }} || true
           docker builder prune --force
 
       - name: Create GitHub Release

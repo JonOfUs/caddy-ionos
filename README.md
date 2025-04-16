@@ -1,8 +1,8 @@
 
-# Caddy Cloudflare
-> A fully integrated Caddy Docker image featuring Cloudflare DNS-01 ACME validation
+# Caddy Ionos
+> A fully integrated Caddy Docker image featuring Ionos DNS-01 ACME validation
 
-Deploy a hassle-free Caddy server with built-in support for Cloudflare DNS-01 ACME challenges. Streamline your SSL certificate management and ensure your server stays secure without manual updates, making it an effortless and reliable solution.
+Deploy a hassle-free Caddy server with built-in support for Ionos DNS-01 ACME challenges. Streamline your SSL certificate management and ensure your server stays secure without manual updates, making it an effortless and reliable solution.
 
 
 ## Table of Contents
@@ -14,7 +14,7 @@ Deploy a hassle-free Caddy server with built-in support for Cloudflare DNS-01 AC
   - [Sample Caddyfile](#sample-caddyfile)
 - [Configuration](#configuration)
   - [ACME DNS Challenge Configuration](#acme-dns-challenge-configuration)
-  - [Creating a Cloudflare API Token](#creating-a-cloudflare-api-token)
+  - [Creating a Ionos API Token](#creating-a-Ionos-api-token)
 - [Platform Support](#platform-support)
   - [Raspberry Pi](#raspberry-pi-support)
 - [Tags](#tags)
@@ -25,7 +25,7 @@ Deploy a hassle-free Caddy server with built-in support for Cloudflare DNS-01 AC
 
 - **Automated Builds**: Automatically checks for new Caddy releases and builds Docker images.
 - **Continuous Integration**: Utilizes GitHub Actions for seamless CI/CD.
-- **Cloudflare DNS Integration**: Integrates Cloudflare DNS for automatic SSL certificate management.
+- **Ionos DNS Integration**: Integrates Ionos DNS for automatic SSL certificate management.
 - **Multi-Platform Support**: Builds images for multiple architectures, including `amd64`, `arm64`, `arm/v7` (Raspberry Pi), `ppc64le`, and `s390x` , ensuring compatibility across a wide range of devices and systems.
 - **Alpine-based Image**: Provides a lightweight Alpine-based image for smaller size and faster deployment.
 - **Manual Trigger**: Allows manual triggering of the build process.
@@ -38,17 +38,17 @@ Deploy a hassle-free Caddy server with built-in support for Cloudflare DNS-01 AC
 To use the pre-built Docker image, pull it from the GitHub Container Registry:
 
 ```sh
-docker pull ghcr.io/caddybuilds/caddy-cloudflare:latest
-docker pull caddybuilds/caddy-cloudflare:latest
+docker pull ghcr.io/caddybuilds/caddy-ionos:latest
+docker pull caddybuilds/caddy-ionos:latest
 # alpine
-docker pull ghcr.io/caddybuilds/caddy-cloudflare:alpine
-docker pull caddybuilds/caddy-cloudflare:alpine
+docker pull ghcr.io/caddybuilds/caddy-ionos:alpine
+docker pull caddybuilds/caddy-ionos:alpine
 ```
 You can use the image in your Docker setup. Here is an example `docker-compose.yml` file:
 ```yaml
 services:
   caddy:
-    image: ghcr.io/caddybuilds/caddy-cloudflare:latest
+    image: ghcr.io/caddybuilds/caddy-ionos:latest
     restart: unless-stopped
     cap_add:
       - NET_ADMIN
@@ -62,7 +62,7 @@ services:
       - caddy_data:/data
       - caddy_config:/config
     environment:
-      - CLOUDFLARE_API_TOKEN=your_cloudflare_api_token
+      - CLOUDFLARE_API_TOKEN=your_ionos_api_token
 
 volumes:
   caddy_data:
@@ -71,10 +71,10 @@ volumes:
 ```
 Defining the data volume as [external](https://docs.docker.com/compose/compose-file/compose-file-v3/#external) makes sure `docker-compose down` does not delete the volume. You may need to create it manually using `docker volume create caddy_data`.
 
-Replace `your_cloudflare_api_token` with your actual Cloudflare API token.
+Replace `your_ionos_api_token` with your actual Ionos API token.
 
 ## Sample Caddyfile
-Here is a sample Caddyfile configuration to get you started. This configuration sets up the ACME DNS challenge provider to use Cloudflare and serves a simple static site.
+Here is a sample Caddyfile configuration to get you started. This configuration sets up the ACME DNS challenge provider to use Ionos and serves a simple static site.
 
 ### Global Configuration (Use DNS Challenge for All Sites)
 In this configuration, the ACME DNS challenge provider is set globally, so it applies to all sites served by Caddy.
@@ -86,8 +86,8 @@ In this configuration, the ACME DNS challenge provider is set globally, so it ap
 # domain name.
 
 {
-  # Set the ACME DNS challenge provider to use Cloudflare for all sites
-  acme_dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+  # Set the ACME DNS challenge provider to use Ionos for all sites
+  acme_dns ionos {env.CLOUDFLARE_API_TOKEN}
 }
 
 example.com {
@@ -124,7 +124,7 @@ another-example.com {
 ### Per-site Configuration
 ```
 example.com {
-  
+
     # Set this path to your site's directory.
     root * /usr/share/caddy
 
@@ -140,7 +140,7 @@ example.com {
     encode gzip
 
     tls {
-        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+        dns ionos {env.CLOUDFLARE_API_TOKEN}
     }
 }
 
@@ -150,18 +150,18 @@ another-example.com {
     encode gzip
 
     tls {
-        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+        dns ionos {env.CLOUDFLARE_API_TOKEN}
     }
 }
 ```
 
 ## Configuration
-### Creating a Cloudflare API Token
+### Creating a Ionos API Token
 
-To use the Cloudflare DNS challenge provider, you'll need to create an API token in your Cloudflare account. Follow these steps to create a token with the necessary permissions:
+To use the Ionos DNS challenge provider, you'll need to create an API token in your Ionos account. Follow these steps to create a token with the necessary permissions:
 
-1. **Log in to Cloudflare**:
-   - Go to the Cloudflare dashboard at [dash.cloudflare.com](https://dash.cloudflare.com) and log in with your account credentials.
+1. **Log in to Ionos**:
+   - Go to the Ionos dashboard at [dash.ionos.com](https://dash.ionos.com) and log in with your account credentials.
 
 2. **Navigate to API Tokens**:
    - Click on your profile icon in the top right corner of the dashboard.
@@ -196,7 +196,7 @@ For example, in a Docker environment, you can set this environment variable in y
 ```yaml
 services:
   caddy:
-    image: ghcr.io/caddybuilds/caddy-cloudflare:latest
+    image: ghcr.io/caddybuilds/caddy-ionos:latest
     restart: unless-stopped
     cap_add:
       - NET_ADMIN
@@ -210,7 +210,7 @@ services:
       - caddy_data:/data
       - caddy_config:/config
     environment:
-      - CLOUDFLARE_API_TOKEN=your_cloudflare_api_token
+      - CLOUDFLARE_API_TOKEN=your_ionos_api_token
 
 volumes:
   caddy_data:
@@ -219,18 +219,18 @@ volumes:
 ```
 Defining the data volume as [external](https://docs.docker.com/compose/compose-file/compose-file-v3/#external) makes sure `docker-compose down` does not delete the volume. You may need to create it manually using `docker volume create caddy_data`.
 
-Replace `your_cloudflare_api_token` with the actual token you generated.
+Replace `your_ionos_api_token` with the actual token you generated.
 
-By following these steps, you'll have a Cloudflare API token configured with the necessary permissions to allow Caddy to manage DNS records for the DNS-01 ACME challenge.
+By following these steps, you'll have a Ionos API token configured with the necessary permissions to allow Caddy to manage DNS records for the DNS-01 ACME challenge.
 
 ### ACME DNS Challenge Configuration
 To configure the [ACME DNS challenge](https://caddyserver.com/docs/automatic-https#dns-challenge) provider for all ACME transactions, add the following to your Caddyfile:
 ```
 {
-   acme_dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+   acme_dns ionos {env.CLOUDFLARE_API_TOKEN}
 }
 ```
-This configuration sets up the provider to use the Cloudflare DNS module with the API token provided as an environment variable. It ensures that your Caddy server can automatically issue and renew SSL certificates using DNS-01 challenges via Cloudflare.
+This configuration sets up the provider to use the Ionos DNS module with the API token provided as an environment variable. It ensures that your Caddy server can automatically issue and renew SSL certificates using DNS-01 challenges via Ionos.
 
 This setup is the same as specifying the provider in the [tls directive's ACME issuer](https://caddyserver.com/docs/caddyfile/directives/tls#acme) configuration.
 
@@ -238,18 +238,18 @@ This setup is the same as specifying the provider in the [tls directive's ACME i
 
 ## Tags
 
-The [caddy-cloudflare](https://github.com/caddybuilds/caddy-cloudflare/pkgs/container/caddy-cloudflare) image on GitHub Container Registry and Docker Hub provides the following tags:
+The [caddy-ionos](https://github.com/caddybuilds/caddy-ionos/pkgs/container/caddy-ionos) image on GitHub Container Registry and Docker Hub provides the following tags:
 
-- **`latest`**: 
-  - Always points to the most recent stable release of Caddy with the Cloudflare DNS module.
+- **`latest`**:
+  - Always points to the most recent stable release of Caddy with the Ionos DNS module.
   - Automatically updated to ensure you have the latest features and improvements.
 
 - **`<version>`**:
   - Specific version tags for precise version control and consistency in deployments.
   - Examples include:
-    - **`2.7.6`**: Full version tag for Caddy version 2.7.6, ensuring you are using this exact release. 
-    
-         (eg: ```docker pull ghcr.io/caddybuilds/caddy-cloudflare:2.8.0``` )
+    - **`2.7.6`**: Full version tag for Caddy version 2.7.6, ensuring you are using this exact release.
+
+         (eg: ```docker pull ghcr.io/caddybuilds/caddy-ionos:2.8.0``` )
     - **`2.7`**: Minor version tag for the latest patch release within the 2.7 series, allowing for minor updates without breaking changes.
     - **`2`**: Major version tag for the latest release within the 2.x series, providing updates within the major version while maintaining compatibility.
 
@@ -258,7 +258,7 @@ The [caddy-cloudflare](https://github.com/caddybuilds/caddy-cloudflare/pkgs/cont
 
 ## Platform Support
 
-The `caddybuilds/caddy-cloudflare` image is built to support multiple platforms, ensuring compatibility across a wide range of devices and systems. The supported platforms include:
+The `caddybuilds/caddy-ionos` image is built to support multiple platforms, ensuring compatibility across a wide range of devices and systems. The supported platforms include:
 
 - **linux/amd64**: Standard x86_64 architecture, commonly used in desktop and server environments.
 - **linux/arm64**: ARM 64-bit architecture, used in many modern servers and high-end ARM devices.
@@ -279,18 +279,18 @@ The Alpine-based image provides a lightweight alternative, based on the popular 
 To use the Alpine-based image, pull it from the GitHub Container Registry or Docker Hub:
 
 ```sh
-docker pull ghcr.io/caddybuilds/caddy-cloudflare:alpine
-docker pull caddybuilds/caddy-cloudflare:alpine
+docker pull ghcr.io/caddybuilds/caddy-ionos:alpine
+docker pull caddybuilds/caddy-ionos:alpine
 ```
 
 ### Raspberry Pi Support
 
-This Docker image is optimized for Raspberry Pi, allowing you to deploy Caddy with Cloudflare DNS integration on these popular single-board computers. Whether you are using a Raspberry Pi 3 or the latest Raspberry Pi 4, this image provides the necessary support for seamless operation.
+This Docker image is optimized for Raspberry Pi, allowing you to deploy Caddy with Ionos DNS integration on these popular single-board computers. Whether you are using a Raspberry Pi 3 or the latest Raspberry Pi 4, this image provides the necessary support for seamless operation.
 
 To use the image on a Raspberry Pi, ensure you are running a compatible operating system (such as Raspberry Pi OS) and have Docker installed. You can then pull the image and run it as you would on any other system:
 
 ```sh
-docker pull ghcr.io/caddybuilds/caddy-cloudflare:latest
+docker pull ghcr.io/caddybuilds/caddy-ionos:latest
 ```
 # Building Your Own Docker Image
 If you prefer to build your own Docker image, follow these steps:
@@ -306,12 +306,12 @@ If you prefer to build your own Docker image, follow these steps:
 
 ## Setup Instructions
 
-1. **[Fork this repository](https://github.com/caddybuilds/caddy-cloudflare/fork)** to your GitHub account.
+1. **[Fork this repository](https://github.com/caddybuilds/caddy-ionos/fork)** to your GitHub account.
 
 2. **Clone the forked repository** to your local machine:
    ```sh
-   git clone https://github.com/YOUR_GITHUB_USERNAME/caddy-cloudflare.git
-   cd caddy-cloudflare
+   git clone https://github.com/YOUR_GITHUB_USERNAME/caddy-ionos.git
+   cd caddy-ionos
    ```
 
 3. **Set up GitHub Secrets**:
@@ -344,7 +344,7 @@ If you prefer to build your own Docker image, follow these steps:
    - Once the workflow completes successfully, the Docker image will be available in the GitHub Container Registry under your repository.
    - You can pull the image using:
      ```sh
-     docker pull ghcr.io/YOUR_GITHUB_USERNAME/caddy-cloudflare:latest
+     docker pull ghcr.io/YOUR_GITHUB_USERNAME/caddy-ionos:latest
      ```
 
 ## Usage
@@ -354,7 +354,7 @@ You can use the built Docker image in your projects. Here is an example of how t
 ```yaml
 services:
   caddy:
-    image: ghcr.io/YOUR_GITHUB_USERNAME/caddy-cloudflare:latest
+    image: ghcr.io/YOUR_GITHUB_USERNAME/caddy-ionos:latest
     restart: unless-stopped
     cap_add:
       - NET_ADMIN
@@ -368,7 +368,7 @@ services:
       - caddy_data:/data
       - caddy_config:/config
     environment:
-      - CLOUDFLARE_API_TOKEN=your_cloudflare_api_token
+      - CLOUDFLARE_API_TOKEN=your_ionos_api_token
 
 volumes:
   caddy_data:
@@ -377,7 +377,7 @@ volumes:
 ```
 Defining the data volume as [external](https://docs.docker.com/compose/compose-file/compose-file-v3/#external) makes sure `docker-compose down` does not delete the volume. You may need to create it manually using `docker volume create caddy_data`.
 
-Replace `YOUR_GITHUB_USERNAME` with your GitHub username and `your_cloudflare_api_token` with your actual Cloudflare API token.
+Replace `YOUR_GITHUB_USERNAME` with your GitHub username and `your_ionos_api_token` with your actual Ionos API token.
 
 ## Contributing
 
